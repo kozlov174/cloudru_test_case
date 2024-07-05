@@ -1,0 +1,30 @@
+ - hosts: all
+   become: true
+   vars:
+      sshd_config_file: /etc/ssh/sshd_config
+   vars_prompt:
+      - name: public_key
+        prompt: paste your public key here
+   tasks:
+      - name: create new user
+        user:
+            name: cloudru
+            password: "{{pwd | password_hash('sha512')}}"
+        vars:
+            pwd: "cloudpass"
+
+      - name: enable_shh
+        ansible.posix.authorized_key:
+            user: cloudru
+            state: present
+            key: {{public_key}}
+
+      - name: Disable root login
+        lineinfile:
+           path: "{{ sshd_config_file }}"
+           regexp: "^PermitRootLogin"
+           line: "PermitRootLogin no"
+           backup: yes
+        notify: restart sshd
+
+
