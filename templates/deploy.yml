@@ -4,14 +4,14 @@ metadata:
   name: my-service
   namespace: my-app-space
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: my-app
   spec:
     containers:
       - name: my-api-app
-        image: my-first-api
+        image: {{.Values.container}}
     ports:
       - containerPort: 8000
 ---

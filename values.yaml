@@ -1,0 +1,8 @@
+# DEFAULT Values for my chart
+
+container:
+  image: #write your image here
+
+replicaCount: #write replica count
+
+AUTHOR: "name of author"
